@@ -1,0 +1,82 @@
+[
+  {
+    "__typename": "UserProfiles",
+    "email": "janesmith@mail.com",
+    "userId": "2",
+    "profilePicture": "https://images.pexels.com/photos/8993561/pexels-photo-8993561.jpeg",
+    "fullName": "Jane Smith",
+    "jobTitle": "Product Manager",
+    "address": "456 Elm St, City, State",
+    "phoneNumber": "987-654-3210",
+    "socialLinks": [
+      "https://www.linkedin.com/in/janesmith",
+      "https://twitter.com/janesmith"
+    ],
+    "tags": [
+      { "tagId": 4, "tag": "Product Management" },
+      { "tagId": 5, "tag": "Strategy" },
+      { "tagId": 6, "tag": "Innovation" }
+    ],
+    "visibility": "VISIBLE"
+  },
+  {
+    "__typename": "UserProfiles",
+    "email": "alexjohnson@mail.com",
+    "userId": "3",
+    "profilePicture": "https://images.pexels.com/photos/3454298/pexels-photo-3454298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "fullName": "Alex Johnson",
+    "jobTitle": "Graphic Designer",
+    "address": "789 Oak St, City, State",
+    "phoneNumber": "555-123-4567",
+    "socialLinks": [
+      "https://www.linkedin.com/in/alexjohnson",
+      "https://dribbble.com/alexjohnson"
+    ],
+    "tags": [
+      { "tagId": 7, "tag": "Design" },
+      { "tagId": 8, "tag": "Illustration" },
+      { "tagId": 9, "tag": "Branding" }
+    ],
+    "visibility": "INVISIBLE"
+  },
+  {
+    "__typename": "UserProfiles",
+    "email": "emilybrown@mail.com",
+    "userId": "4",
+    "profilePicture": "https://images.pexels.com/photos/7275385/pexels-photo-7275385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "fullName": "Emily Brown",
+    "jobTitle": "Marketing Specialist",
+    "address": "567 Pine St, City, State",
+    "phoneNumber": "777-888-9999",
+    "socialLinks": [
+      "https://www.linkedin.com/in/emilybrown",
+      "https://twitter.com/emilybrown"
+    ],
+    "tags": [
+      { "tagId": 10, "tag": "Marketing" },
+      { "tagId": 11, "tag": "Digital Strategy" },
+      { "tagId": 12, "tag": "Content" }
+    ],
+    "visibility": "VISIBLE"
+  },
+  {
+    "__typename": "UserProfiles",
+    "email": "michaelwilson@mail.com",
+    "userId": "5",
+    "profilePicture": "https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "fullName": "Michael Wilson",
+    "jobTitle": "Entrepreneur",
+    "address": "101 Cedar St, City, State",
+    "phoneNumber": "444-555-6666",
+    "socialLinks": [
+      "https://www.linkedin.com/in/michaelwilson",
+      "https://angel.co/michaelwilson"
+    ],
+    "tags": [
+      { "tagId": 13, "tag": "Startups" },
+      { "tagId": 14, "tag": "Venture Capital" },
+      { "tagId": 15, "tag": "Innovation" }
+    ],
+    "visibility": "VISIBLE"
+  }
+]
