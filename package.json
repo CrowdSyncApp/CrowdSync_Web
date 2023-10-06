@@ -1,7 +1,7 @@
 {
   "name": "crowdsync-web",
   "version": "0.1.0",
-  "homepage": "https://crowdsync.net/App/",
+  "homepage": "https://main.d2jor45tr2cyp1.amplifyapp.com/",
   "private": true,
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
