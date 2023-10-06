@@ -73,7 +73,7 @@ const ChatScreen = () => {
     }
 
     setIdReceiverAndParticipantsList();
-  }, [log, chatType, authContext.user, parsedParticipants]);
+  }, [log, chatType, authContext.user]);
 
   useEffect(() => {
     log.debug(
