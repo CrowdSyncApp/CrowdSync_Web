@@ -32,7 +32,7 @@ const ForgotPasswordScreen = () => {
     try {
       await Auth.forgotPasswordSubmit(username, verificationCode, newPassword);
       alert("Password reset successful.");
-      // Navigate back to login or wherever you need
+
       navigation("/");
     } catch (error) {
       console.error("Reset password error:", error);

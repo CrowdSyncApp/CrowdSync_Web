@@ -3,25 +3,24 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../QueryCaching";
 import styles from "./style";
 import { useLog } from "../CrowdSyncLogManager";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Tag } from "../interfaces";
 
 const ProfileScreen = () => {
   const authContext = useAuth();
-  const location = useLocation();
   const navigation = useNavigate();
   const [profilePictureUri, setProfilePictureUri] = useState("");
   const log = useLog();
 
-  const params = new URLSearchParams(location.search);
-  const userProfileData = JSON.parse(params.get("userprofiledata") || "{}");
+  const { userprofiledata } = useParams();
+  const parsedUserprofiledata = JSON.parse(userprofiledata ?? "{}");
 
   useEffect(() => {
     const fetchData = async () => {
       async function getProfileImageUri() {
         const profilePicture = await authContext.fetchUserProfileImage(
-          userProfileData.identityId,
-          userProfileData.profilePicture,
+          parsedUserprofiledata.identityId,
+          parsedUserprofiledata.profilePicture,
           log
         );
         log.debug(
@@ -36,8 +35,8 @@ const ProfileScreen = () => {
 
     fetchData();
   }, [
-    userProfileData.identityId,
-    userProfileData.profilePicture,
+    parsedUserprofiledata.identityId,
+    parsedUserprofiledata.profilePicture,
     authContext,
     log,
   ]);
@@ -63,13 +62,13 @@ const ProfileScreen = () => {
   const handleMyConnectionsPress = () => {
     log.debug(
       "handleMyConnectionsPress on userProfileData: ",
-      JSON.stringify(userProfileData)
+      JSON.stringify(parsedUserprofiledata)
     );
 
-    const params = {
-      userProfileData: JSON.stringify(userProfileData),
-    };
-    navigation(`/connections/${new URLSearchParams(params).toString()}`);
+    const userProfileDataParam = encodeURIComponent(
+      JSON.stringify(parsedUserprofiledata)
+    );
+    navigation(`/chat/${userProfileDataParam}`);
   };
 
   const handleLinkPress = (url: string) => {
@@ -108,31 +107,32 @@ const ProfileScreen = () => {
 
           {/* Full Name */}
           <div style={{ alignItems: "center" }}>
-            <h1 style={styles.headerTitle}>{userProfileData.fullName}</h1>
+            <h1 style={styles.headerTitle}>{parsedUserprofiledata.fullName}</h1>
           </div>
 
           {/* Job Title and Company */}
-          {userProfileData.jobTitle || userProfileData.company ? (
+          {parsedUserprofiledata.jobTitle || parsedUserprofiledata.company ? (
             <div style={{ alignItems: "center" }}>
               <h2 style={styles.secondaryHeaderTitle}>
-                {userProfileData.jobTitle}
-                {userProfileData.jobTitle && userProfileData.company
+                {parsedUserprofiledata.jobTitle}
+                {parsedUserprofiledata.jobTitle && parsedUserprofiledata.company
                   ? ", "
                   : ""}
-                {userProfileData.company}
+                {parsedUserprofiledata.company}
               </h2>
             </div>
           ) : null}
 
           {/* Location and Phone Number */}
-          {userProfileData.jobTitle || userProfileData.company ? (
+          {parsedUserprofiledata.jobTitle || parsedUserprofiledata.company ? (
             <div style={{ alignItems: "center" }}>
               <h2 style={styles.secondaryHeaderTitle}>
-                {userProfileData.location}
-                {userProfileData.location && userProfileData.phoneNumber
+                {parsedUserprofiledata.location}
+                {parsedUserprofiledata.location &&
+                parsedUserprofiledata.phoneNumber
                   ? ", "
                   : ""}
-                {userProfileData.phoneNumber}
+                {parsedUserprofiledata.phoneNumber}
               </h2>
             </div>
           ) : null}
@@ -140,16 +140,17 @@ const ProfileScreen = () => {
           {/* Render Social Links */}
           <div>
             <h2 style={styles.secondaryHeaderTitle}>Social Links:</h2>
-            {renderSocialLinks(userProfileData.socialLinks)}
+            {renderSocialLinks(parsedUserprofiledata.socialLinks)}
           </div>
 
           {/* My Tags */}
           <div>
             <h2 style={styles.secondaryHeaderTitle}>My Tags:</h2>
             <p style={styles.detailText}>
-              {userProfileData.tags && userProfileData.tags.length > 0
-                ? userProfileData.tags.map((tag: Tag, index: number) =>
-                    index === userProfileData.tags.length - 1
+              {parsedUserprofiledata.tags &&
+              parsedUserprofiledata.tags.length > 0
+                ? parsedUserprofiledata.tags.map((tag: Tag, index: number) =>
+                    index === parsedUserprofiledata.tags.length - 1
                       ? tag.tag
                       : tag.tag + ", "
                   )

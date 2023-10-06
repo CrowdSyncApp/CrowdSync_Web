@@ -4,18 +4,12 @@ import { API, graphqlOperation } from "aws-amplify";
 import { useAuth } from "../QueryCaching";
 import { getLocations } from "../graphql/queries";
 import { useLog } from "../CrowdSyncLogManager";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { GetLocationsQuery } from "../API";
 import { Location } from "../interfaces";
-import {
-  GoogleMap,
-  Polyline,
-  LoadScript,
-  Marker,
-} from "@react-google-maps/api";
+import { GoogleMap, Polyline, MarkerF } from "@react-google-maps/api";
 
 const UserLocation = () => {
-  const navLocation = useLocation();
   const authContext = useAuth();
   const log = useLog();
   const [location, setLocation] = useState<Location | null>(null);
@@ -23,9 +17,8 @@ const UserLocation = () => {
     null
   );
 
-  const params = new URLSearchParams(navLocation.search);
-  const userData = JSON.parse(params.get("userData") || "{}");
-  const sessionId = JSON.parse(params.get("sessionId") || "{}");
+  const { userData, sessionId } = useParams();
+  const parsedUserData = JSON.parse(userData ?? "{}");
 
   log.debug(
     "Entering UserLocation screen on userData: " +
@@ -39,16 +32,17 @@ const UserLocation = () => {
       try {
         let userId;
         if (
-          userData.userId === "1" ||
-          userData.userId === "2" ||
-          userData.userId === "3" ||
-          userData.userId === "4" ||
-          userData.userId === "5"
+          parsedUserData.userId === "1" ||
+          parsedUserData.userId === "2" ||
+          parsedUserData.userId === "3" ||
+          parsedUserData.userId === "4" ||
+          parsedUserData.userId === "5"
         ) {
           userId = "0949d9ce-b0b1-7019-0aba-062ae33bdd92";
         } else {
-          userId = userData.userId;
+          userId = parsedUserData.userId;
         }
+
         const response: any = await API.graphql(
           graphqlOperation(getLocations, {
             userId: userId,
@@ -89,7 +83,7 @@ const UserLocation = () => {
 
     fetchData();
   }, [
-    userData.userId,
+    parsedUserData.userId,
     sessionId,
     setLocation,
     setOtherUserLocation,
@@ -102,51 +96,52 @@ const UserLocation = () => {
       <div style={styles.index}>
         <div style={styles.div}>
           {location && otherUserLocation ? (
-            <LoadScript googleMapsApiKey="AIzaSyDpQkIQ690BaoZdhOTypPfrWl7rruN2Srs">
-              <GoogleMap
-                mapContainerStyle={{ flex: 1 }}
-                center={{
+            <GoogleMap
+              mapContainerStyle={{ flex: 1, height: "100vh" }}
+              center={{
+                lat: otherUserLocation.latitude,
+                lng: otherUserLocation.longitude,
+              }}
+              zoom={17}
+            >
+              {/* Your Marker */}
+              <MarkerF
+                position={{
+                  lat: location.latitude,
+                  lng: location.longitude,
+                }}
+                title="Your Location"
+                key={1}
+              />
+
+              {/* Other User's Marker */}
+              <MarkerF
+                position={{
                   lat: otherUserLocation.latitude,
                   lng: otherUserLocation.longitude,
                 }}
-              >
-                {/* Your Marker */}
-                <Marker
-                  position={{
+                title="Other User's Location"
+                key={2}
+              />
+
+              {/* Polyline to show path */}
+              <Polyline
+                path={[
+                  {
                     lat: location.latitude,
                     lng: location.longitude,
-                  }}
-                  title="Your Location"
-                />
-
-                {/* Other User's Marker */}
-                <Marker
-                  position={{
+                  },
+                  {
                     lat: otherUserLocation.latitude,
                     lng: otherUserLocation.longitude,
-                  }}
-                  title="Other User's Location"
-                />
-
-                {/* Polyline to show path */}
-                <Polyline
-                  path={[
-                    {
-                      lat: location.latitude,
-                      lng: location.longitude,
-                    },
-                    {
-                      lat: otherUserLocation.latitude,
-                      lng: otherUserLocation.longitude,
-                    },
-                  ]}
-                  options={{
-                    strokeColor: "#000",
-                    strokeWeight: 2,
-                  }}
-                />
-              </GoogleMap>
-            </LoadScript>
+                  },
+                ]}
+                options={{
+                  strokeColor: "#000",
+                  strokeWeight: 2,
+                }}
+              />
+            </GoogleMap>
           ) : (
             <h1>Loading...</h1>
           )}

@@ -8,7 +8,7 @@ import { useAuth } from "../QueryCaching";
 import styles from "./style";
 import { useLog } from "../CrowdSyncLogManager";
 import { getSessionData } from "./SessionManager";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Participants, Chats } from "../API";
 
 const ChatScreen = () => {
@@ -17,12 +17,10 @@ const ChatScreen = () => {
   const [chatId, setChatId] = useState("");
   const [recIds, setRecIds] = useState([]);
   const authContext = useAuth();
-  const location = useLocation();
   const log = useLog();
 
-  const params = new URLSearchParams(location.search);
-  const participants = JSON.parse(params.get("participants") || "{}");
-  const chatType = JSON.parse(params.get("chatType") || "INDIVIDUAL");
+  const { participants, chatType } = useParams();
+  const parsedParticipants = JSON.parse(participants ?? "{[]}");
 
   const fakeChats = [
     "Hey everyone! I just got to the event",
@@ -34,7 +32,7 @@ const ChatScreen = () => {
 
   log.debug(
     "Entering ChatScreen with participants: " +
-      JSON.stringify(participants) +
+      JSON.stringify(parsedParticipants) +
       " and chatType: " +
       JSON.stringify(chatType)
   );
@@ -45,8 +43,8 @@ const ChatScreen = () => {
       let receiver;
 
       log.debug("senderId: ", JSON.stringify(authContext.user?.getUsername()));
-      log.debug("participantsList: ", JSON.stringify(participants));
-      let participantIds = participants.map(
+      log.debug("participantsList: ", JSON.stringify(parsedParticipants));
+      let participantIds = parsedParticipants.map(
         (participant: Participants) => participant.userId
       );
 
@@ -58,7 +56,7 @@ const ChatScreen = () => {
       } else {
         const userList: string[] = [
           authContext.user?.getUsername(),
-          participants[0].userId,
+          parsedParticipants[0].userId,
         ];
         userList.sort(); // Sort the user IDs
 
@@ -66,7 +64,7 @@ const ChatScreen = () => {
 
         // Combine the sorted user IDs
         id = userList[0] + userList[1];
-        receiver = [participants[0].userId];
+        receiver = [parsedParticipants[0].userId];
       }
       log.debug("chatId: ", JSON.stringify(id));
       log.debug("ReceiverIds: ", JSON.stringify(receiver));
@@ -75,7 +73,7 @@ const ChatScreen = () => {
     }
 
     setIdReceiverAndParticipantsList();
-  }, [log, chatType, participants, authContext.user]);
+  }, [log, chatType, authContext.user, parsedParticipants]);
 
   useEffect(() => {
     log.debug(

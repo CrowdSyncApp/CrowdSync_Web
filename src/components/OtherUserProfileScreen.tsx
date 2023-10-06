@@ -3,24 +3,22 @@ import { getSessionData, getParticipantVisibility } from "./SessionManager";
 import styles from "./style";
 import { useAuth } from "../QueryCaching";
 import { useLog } from "../CrowdSyncLogManager";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Tag } from "../interfaces";
 
 const OtherUserProfileScreen = () => {
   const authContext = useAuth();
-  const location = useLocation();
   const navigation = useNavigate();
   const [profilePictureUri, setProfilePictureUri] = useState("");
   const [userTags, setUserTags] = useState<Tag[]>([]);
   const log = useLog();
 
-  const params = new URLSearchParams(location.search);
-  const userData = JSON.parse(params.get("userData") || "{}");
-  const sessionId = JSON.parse(params.get("sessionId") || "{}");
+  const { userData, sessionId } = useParams();
+  const parsedUserData = JSON.parse(userData ?? "{}");
 
   log.debug(
     "OtherUserProfileScreen on userData: " +
-      JSON.stringify(userData) +
+      JSON.stringify(parsedUserData) +
       " and sessionId: " +
       JSON.stringify(sessionId)
   );
@@ -33,17 +31,17 @@ const OtherUserProfileScreen = () => {
       async function getProfileImageUri() {
         let profilePicture;
         if (
-          userData.userId === "1" ||
-          userData.userId === "2" ||
-          userData.userId === "3" ||
-          userData.userId === "4" ||
-          userData.userId === "5"
+          parsedUserData.userId === "1" ||
+          parsedUserData.userId === "2" ||
+          parsedUserData.userId === "3" ||
+          parsedUserData.userId === "4" ||
+          parsedUserData.userId === "5"
         ) {
-          profilePicture = userData.profilePicture;
+          profilePicture = parsedUserData.profilePicture;
         } else {
           profilePicture = await authContext.fetchUserProfileImage(
-            userData.identityId,
-            userData.profilePicture,
+            parsedUserData.identityId,
+            parsedUserData.profilePicture,
             log
           );
         }
@@ -57,20 +55,20 @@ const OtherUserProfileScreen = () => {
       async function getVisibility() {
         let visible;
         if (
-          userData.userId === "1" ||
-          userData.userId === "2" ||
-          userData.userId === "3" ||
-          userData.userId === "4" ||
-          userData.userId === "5"
+          parsedUserData.userId === "1" ||
+          parsedUserData.userId === "2" ||
+          parsedUserData.userId === "3" ||
+          parsedUserData.userId === "4" ||
+          parsedUserData.userId === "5"
         ) {
           visible = true;
-          if (userData.userId === "3") {
+          if (parsedUserData.userId === "3") {
             visible = false;
           }
         } else {
           visible = await getParticipantVisibility(
-            userData.userId,
-            sessionId,
+            parsedUserData.userId,
+            sessionId ?? "INACTIVE",
             log
           );
         }
@@ -80,7 +78,7 @@ const OtherUserProfileScreen = () => {
 
       async function getUserTags() {
         const allUserTags = await authContext.getAllUserTags(
-          userData.userId,
+          parsedUserData.userId,
           log
         );
         log.debug("userTags retrieved: ", JSON.stringify(allUserTags));
@@ -111,7 +109,7 @@ const OtherUserProfileScreen = () => {
             "Error fetching current user's sessionId:",
             JSON.stringify(error)
           );
-          setShowLocationButton(false); // Handle the error by not showing the button
+          setShowLocationButton(false);
         }
       }
 
@@ -123,10 +121,10 @@ const OtherUserProfileScreen = () => {
 
     fetchData();
   }, [
-    userData.userId,
+    parsedUserData.userId,
     sessionId,
-    userData.profilePicture,
-    userData.identityId,
+    parsedUserData.profilePicture,
+    parsedUserData.identityId,
     log,
     authContext,
   ]);
@@ -161,36 +159,28 @@ const OtherUserProfileScreen = () => {
   const handleChatPress = () => {
     log.debug(
       "handleChatPress on participants: " +
-        JSON.stringify([userData]) +
+        JSON.stringify([parsedUserData]) +
         " and chatType: INDIVIDUAL"
     );
 
-    const params = {
-      participants: JSON.stringify([userData]),
-      chatType: "INDIVIDUAL",
-    };
-
-    navigation(
-      `/chat/${JSON.stringify(new URLSearchParams(params).toString())}`
+    const participantsParam = encodeURIComponent(
+      JSON.stringify([parsedUserData])
     );
+    const chatTypeParam = encodeURIComponent("INDIVIDUAL");
+    navigation(`/chat/${participantsParam}/${chatTypeParam}`);
   };
 
   const handleLocationPress = () => {
     log.debug(
       "handleLocationPress on userData: " +
-        JSON.stringify(userData) +
+        JSON.stringify(parsedUserData) +
         " and sessionId: " +
         JSON.stringify(sessionId)
     );
 
-    const params = {
-      userData: JSON.stringify(userData),
-      sessionId: sessionId,
-    };
-
-    navigation(
-      `/userlocation/${JSON.stringify(new URLSearchParams(params).toString())}`
-    );
+    const userDataParam = encodeURIComponent(JSON.stringify(parsedUserData));
+    const sessionIdParam = encodeURIComponent(sessionId ?? "INACTIVE");
+    navigation(`/userlocation/${userDataParam}/${sessionIdParam}`);
   };
 
   return (
@@ -215,27 +205,29 @@ const OtherUserProfileScreen = () => {
 
           {/* User's Name */}
           <div style={{ alignItems: "center" }}>
-            <h1 style={styles.headerTitle}>{userData.fullName}</h1>
+            <h1 style={styles.headerTitle}>{parsedUserData.fullName}</h1>
           </div>
 
           {/* Job Title and Company */}
-          {userData.jobTitle || userData.company ? (
+          {parsedUserData.jobTitle || parsedUserData.company ? (
             <div style={{ alignItems: "center" }}>
               <h2 style={styles.secondaryHeaderTitle}>
-                {userData.jobTitle}
-                {userData.jobTitle && userData.company ? ", " : ""}
-                {userData.company}
+                {parsedUserData.jobTitle}
+                {parsedUserData.jobTitle && parsedUserData.company ? ", " : ""}
+                {parsedUserData.company}
               </h2>
             </div>
           ) : null}
 
           {/* Location and Phone Number */}
-          {userData.jobTitle || userData.company ? (
+          {parsedUserData.jobTitle || parsedUserData.company ? (
             <div style={{ alignItems: "center" }}>
               <h2 style={styles.secondaryHeaderTitle}>
-                {userData.location}
-                {userData.location && userData.phoneNumber ? ", " : ""}
-                {userData.phoneNumber}
+                {parsedUserData.location}
+                {parsedUserData.location && parsedUserData.phoneNumber
+                  ? ", "
+                  : ""}
+                {parsedUserData.phoneNumber}
               </h2>
             </div>
           ) : null}
@@ -243,7 +235,7 @@ const OtherUserProfileScreen = () => {
           {/* Social URLs */}
           <div>
             <h2 style={styles.secondaryHeaderTitle}>Social Links:</h2>
-            {renderSocialLinks(userData.socialLinks)}
+            {renderSocialLinks(parsedUserData.socialLinks)}
           </div>
 
           {/* User's Tags */}

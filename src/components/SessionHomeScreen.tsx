@@ -13,26 +13,25 @@ import {
 } from "..//graphql/subscriptions";
 import styles from "./style";
 import { useLog } from "../CrowdSyncLogManager";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SessionHomeScreen = () => {
   const navigation = useNavigate();
   const authContext = useAuth();
-  const location = useLocation();
   const log = useLog();
   const [participants, setParticipants] = useState<Array<Participants>>([]);
   const [isVisible, setIsVisible] = useState(true);
   const [isQRCodeModalVisible, setIsQRCodeModalVisible] = useState(false);
 
-  const params = new URLSearchParams(location.search);
-  const sessionData = JSON.parse(params.get("sessionData") || "{}");
+  const { sessionData } = useParams();
+  const parsedSessionData = JSON.parse(sessionData ?? "{}");
 
   const qrCodeData = JSON.stringify({
-    sessionId: sessionData.sessionId,
-    startTime: sessionData.startTime,
-    title: sessionData.title,
-    creatorId: sessionData.creatorId,
-    status: sessionData.status,
+    sessionId: parsedSessionData.sessionId,
+    startTime: parsedSessionData.startTime,
+    title: parsedSessionData.title,
+    creatorId: parsedSessionData.creatorId,
+    status: parsedSessionData.status,
   });
 
   const handleQRCodePress = () => {
@@ -68,7 +67,7 @@ const SessionHomeScreen = () => {
           const response: any = await API.graphql({
             query: getParticipants,
             variables: {
-              sessionId: sessionData.sessionId,
+              sessionId: parsedSessionData.sessionId,
               userId: userProfileData.userId,
             },
           });
@@ -88,12 +87,12 @@ const SessionHomeScreen = () => {
         // Create subscription for adding new participants
         log.debug(
           "onCreateOrUpdateParticipants on sessionData: ",
-          sessionData.sessionId
+          parsedSessionData.sessionId
         );
         const subscription = (
           API.graphql(
             graphqlOperation(onCreateOrUpdateParticipants, {
-              sessionId: sessionData.sessionId,
+              sessionId: parsedSessionData.sessionId,
             })
           ) as Exclude<ReturnType<typeof API.graphql>, Promise<any>>
         ).subscribe({
@@ -124,7 +123,7 @@ const SessionHomeScreen = () => {
         const subscription = (
           API.graphql(
             graphqlOperation(onDeleteParticipants, {
-              sessionId: sessionData.sessionId,
+              sessionId: parsedSessionData.sessionId,
             })
           ) as Exclude<ReturnType<typeof API.graphql>, Promise<any>>
         ).subscribe({
@@ -153,7 +152,7 @@ const SessionHomeScreen = () => {
         const subscription = (
           API.graphql(
             graphqlOperation(onUpdateParticipants, {
-              sessionId: sessionData.sessionId,
+              sessionId: parsedSessionData.sessionId,
             })
           ) as Exclude<ReturnType<typeof API.graphql>, Promise<any>>
         ).subscribe({
@@ -211,7 +210,7 @@ const SessionHomeScreen = () => {
     authContext,
     authContext.user,
     authContext.fetchUserProfileData,
-    sessionData.sessionId,
+    parsedSessionData.sessionId,
     log,
   ]);
 
@@ -222,7 +221,7 @@ const SessionHomeScreen = () => {
     );
     try {
       const username = authContext.user?.getUsername() ?? "";
-      await exitSession(username, sessionData.sessionId, log);
+      await exitSession(username, parsedSessionData.sessionId, log);
 
       navigation("/findsession");
     } catch (error) {
@@ -235,9 +234,9 @@ const SessionHomeScreen = () => {
   const handleEndSession = async () => {
     log.debug("handleEndSession on sessionData: ", JSON.stringify(sessionData));
     if (
-      sessionData.sessionId === "52caeecf-8b99-463c-9e7c-b5a3168cb08c" ||
-      sessionData.sessionId === "f9fc3662-a75e-4d9b-bba3-d28475a707d1" ||
-      sessionData.sessionId === "6d377c2c-ec25-4410-bf0f-81d4c99bbfa9"
+      parsedSessionData.sessionId === "52caeecf-8b99-463c-9e7c-b5a3168cb08c" ||
+      parsedSessionData.sessionId === "f9fc3662-a75e-4d9b-bba3-d28475a707d1" ||
+      parsedSessionData.sessionId === "6d377c2c-ec25-4410-bf0f-81d4c99bbfa9"
     ) {
       // Don't end the permanent sessions, TEMP CODE
       await handleExitSession();
@@ -247,8 +246,8 @@ const SessionHomeScreen = () => {
       const username = authContext.user?.getUsername() ?? "";
       await endSession(
         username,
-        sessionData.sessionId,
-        sessionData.startTime,
+        parsedSessionData.sessionId,
+        parsedSessionData.startTime,
         log
       );
 
@@ -273,7 +272,7 @@ const SessionHomeScreen = () => {
 
       log.debug(
         "updateParticipants on sessionId: " +
-          JSON.stringify(sessionData.sessionId) +
+          JSON.stringify(parsedSessionData.sessionId) +
           " and userId: " +
           JSON.stringify(userProfileData.userId) +
           " and visibility: " +
@@ -282,7 +281,7 @@ const SessionHomeScreen = () => {
       await API.graphql(
         graphqlOperation(updateParticipants, {
           input: {
-            sessionId: sessionData.sessionId,
+            sessionId: parsedSessionData.sessionId,
             userId: userProfileData.userId,
             visibility: newVisibility,
           },
@@ -298,14 +297,9 @@ const SessionHomeScreen = () => {
   };
 
   const handleGroupChatPress = async () => {
-    const params = {
-      participants: JSON.stringify(participants),
-      chatType: "GROUP",
-    };
-
-    navigation(
-      `/chat/${JSON.stringify(new URLSearchParams(params).toString())}`
-    );
+    const participantsParam = encodeURIComponent(JSON.stringify(participants));
+    const chatTypeParam = encodeURIComponent("GROUP");
+    navigation(`/chat/${participantsParam}/${chatTypeParam}`);
   };
 
   const handleUserProfilePress = async (participant: Participants) => {
@@ -313,19 +307,17 @@ const SessionHomeScreen = () => {
       "handleUserProfilePress on participant: " +
         JSON.stringify(participant) +
         " and sessionId: " +
-        JSON.stringify(sessionData.sessionId)
+        JSON.stringify(parsedSessionData.sessionId)
     );
     let userData = await authContext.getUserProfileFromId(
       participant.userId,
       log
     );
 
-    const params = {
-      userData: JSON.stringify(userData),
-      sessionId: JSON.stringify(sessionData.sessionId),
-    };
+    const userDataParam = encodeURIComponent(JSON.stringify(userData));
+    const sessionIdParam = encodeURIComponent(parsedSessionData.sessionId);
 
-    navigation(`/otheruserprofile/${new URLSearchParams(params).toString()}`);
+    navigation(`/otheruser/${userDataParam}/${sessionIdParam}`);
   };
 
   const isAdmin = authContext.user
@@ -344,7 +336,7 @@ const SessionHomeScreen = () => {
         </div>
 
         <div style={{ alignItems: "center" }}>
-          <h1 style={styles.headerTitle}>{sessionData.title}</h1>
+          <h1 style={styles.headerTitle}>{parsedSessionData.title}</h1>
         </div>
 
         <div style={{ flex: 1, width: "100%" }}>

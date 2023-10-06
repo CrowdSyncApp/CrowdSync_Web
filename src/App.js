@@ -4,6 +4,7 @@ import { AuthProvider } from "./QueryCaching";
 import { LogProvider } from "./CrowdSyncLogManager";
 import { Amplify } from "aws-amplify";
 import awsmobile from "./aws-exports";
+import { LoadScript } from "@react-google-maps/api";
 
 import LoginScreen from "./components/LoginScreen";
 import SignUp from "./components/SignUp";
@@ -27,12 +28,12 @@ const AppNavigator = () => {
       <Route path="/findsession" element={<FindSession />} />
       <Route path="/qrcode" element={<QRScannerScreen />} />
       <Route path="/sessionhome/:sessionData" element={<SessionHomeScreen />} />
-      <Route path="/profile" element={<ProfileScreen />} />
-      <Route path="/otheruser" element={<OtherUserProfileScreen />} />
-      <Route path="/connections" element={<MyConnections />} />
+      <Route path="/profile/:userprofiledata" element={<ProfileScreen />} />
+      <Route path="/otheruser/:userData/:sessionId" element={<OtherUserProfileScreen />} />
+      <Route path="/connections/:userProfileData" element={<MyConnections />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/userlocation" element={<UserLocation />} />
+      <Route path="/userlocation/:userData/:sessionId" element={<UserLocation />} />
     </Routes>
   );
 };
@@ -42,6 +43,7 @@ function App() {
     <LogProvider>
       <AuthProvider>
         <Router>
+          <LoadScript googleMapsApiKey="AIzaSyDpQkIQ690BaoZdhOTypPfrWl7rruN2Srs" />
           <AppNavigator />
         </Router>
       </AuthProvider>

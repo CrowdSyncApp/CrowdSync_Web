@@ -4,11 +4,10 @@ import participantsData from "../dummies/dummy_accounts.json";
 import { getSessionIdForUser } from "./SessionManager";
 import styles from "./style";
 import { useLog } from "../CrowdSyncLogManager";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserProfiles } from "../API";
 
 const MyConnections = () => {
-  const location = useLocation();
   const navigation = useNavigate();
   const authContext = useAuth();
   const [connectionsData, setConnectionsData] = useState<UserProfiles[]>([]);
@@ -16,8 +15,8 @@ const MyConnections = () => {
   const typedParticipantsData: UserProfiles[] =
     participantsData as UserProfiles[];
 
-  const params = new URLSearchParams(location.search);
-  const userProfileData = JSON.parse(params.get("userprofiledata") || "{}");
+  const { userProfileData } = useParams();
+  const parsedUserProfileData = JSON.parse(userProfileData ?? "{}");
 
   log.debug(
     "MyConnections screen on userProfileData: ",
@@ -28,7 +27,7 @@ const MyConnections = () => {
     const getConnections = async () => {
       const profiles =
         (await authContext.fetchConnectionsAndProfiles(
-          userProfileData.userId,
+          parsedUserProfileData.userId,
           log
         )) ?? [];
       log.debug("getConnections profiles: ", profiles);
@@ -37,7 +36,7 @@ const MyConnections = () => {
       setConnectionsData(mergedData);
     };
     getConnections();
-  }, [userProfileData.userId, typedParticipantsData, authContext, log]);
+  }, [parsedUserProfileData.userId, typedParticipantsData, authContext, log]);
 
   const handleConnectionPress = async (connectionData: UserProfiles) => {
     log.debug(
@@ -58,12 +57,9 @@ const MyConnections = () => {
           JSON.stringify(sessionId)
       );
 
-      const params = {
-        userData: JSON.stringify(userData),
-        sessionId: JSON.stringify(sessionId),
-      };
-
-      navigation(`/otheruserprofile/${new URLSearchParams(params).toString()}`);
+      const userDataParam = encodeURIComponent(JSON.stringify(userData));
+      const sessionIdParam = encodeURIComponent(sessionId);
+      navigation(`/chat/${userDataParam}/${sessionIdParam}`);
     } catch (error) {
       console.error("Error in handleConnectionPress:", error);
       log.error("Error in handleConnectionPress:", JSON.stringify(error));

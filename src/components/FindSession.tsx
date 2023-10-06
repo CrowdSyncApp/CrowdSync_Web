@@ -12,7 +12,7 @@ import { FlexDirection, Position, fonts, palette } from "./style";
 import { useLog } from "../CrowdSyncLogManager";
 import LoadingScreen from "./LoadingScreen";
 import { SessionData, Location } from "../interfaces";
-import { GoogleMap, Marker, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, MarkerF } from "@react-google-maps/api";
 
 import CreateSessionIcon from "../images/icons/create_session_icon.png";
 import CrowdSyncLogo from "../images/CrowdSync_1563 x 1563_White.png";
@@ -20,6 +20,7 @@ import CrowdSyncLogo from "../images/CrowdSync_1563 x 1563_White.png";
 const FindSessionScreen = () => {
   const navigation = useNavigate();
   const [location, setLocation] = useState<Location | null>();
+  const [profilePictureUri, setProfilePictureUri] = useState("");
   const authContext = useAuth();
   const log = useLog();
   const [itemHeights, setItemHeights] = useState<number[]>([]);
@@ -94,6 +95,31 @@ const FindSessionScreen = () => {
     storeLocationIntervalId();
   }, [authContext, log]);
 
+  useEffect(() => {
+    async function getProfileImageUri() {
+      try {
+        const userProfileData = await authContext.fetchUserProfileData();
+        log.debug(
+          "getProfileImageUri on userProfileData: ",
+          JSON.stringify(userProfileData)
+        );
+        const profilePicture = await authContext.fetchUserProfileImage(
+          userProfileData?.identityId ?? "",
+          userProfileData?.profilePicture ?? "",
+          log
+        );
+        setProfilePictureUri(profilePicture);
+      } catch (error) {
+        log.error(
+          "Error saving profile picture in Header: ",
+          JSON.stringify(error)
+        );
+      }
+    }
+
+    getProfileImageUri();
+  }, [authContext, log]);
+
   const handleCreateSession = async () => {
     // Toggle the visibility of the modal
     setIsModalVisible(false);
@@ -143,11 +169,8 @@ const FindSessionScreen = () => {
     );
 
     if (newSession) {
-      const params = {
-        sessionData: jsonNewSession,
-      };
-
-      navigation(`/sessionhome/${new URLSearchParams(params).toString()}`);
+      const sessionDataParam = encodeURIComponent(jsonNewSession);
+      navigation(`/sessionhome/${sessionDataParam}`);
     }
   };
 
@@ -170,13 +193,17 @@ const FindSessionScreen = () => {
 
     await storeSessionData(session, log);
 
-    const params = {
-      sessionData: JSON.stringify(session),
-    };
+    const sessionDataParam = encodeURIComponent(JSON.stringify(session));
+    navigation(`/sessionhome/${sessionDataParam}`);
+  };
 
-    navigation(
-      `/sessionhome/${JSON.stringify(new URLSearchParams(params).toString())}`
+  const handleProfilePress = async () => {
+    log.debug("handleProfilePress...");
+
+    const userProfileDataParam = encodeURIComponent(
+      JSON.stringify(authContext.fetchUserProfileData())
     );
+    navigation(`/profile/${userProfileDataParam}`);
   };
 
   const handleItemLayout = (index: number) => {
@@ -260,7 +287,22 @@ const FindSessionScreen = () => {
       <div style={overlayStyles.leftSection}>
         <div style={overlayStyles.leftSectionHeader}>
           <div>
-            <p>PROFILE</p>
+            {profilePictureUri !== "" ? (
+              <button onClick={handleProfilePress}>
+                <img
+                  src={profilePictureUri}
+                  alt="Profile"
+                  object-fit="cover"
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 25,
+                  }}
+                />
+              </button>
+            ) : (
+              <div style={{ width: 50, height: 50 }} />
+            )}
           </div>
           <img
             src={CrowdSyncLogo}
@@ -282,20 +324,16 @@ const FindSessionScreen = () => {
         {renderNearbySessions()}
       </div>
       {location ? (
-        <LoadScript googleMapsApiKey="AIzaSyDpQkIQ690BaoZdhOTypPfrWl7rruN2Srs">
-          <GoogleMap
-            mapContainerStyle={{ height: "100vh" }}
-            center={{ lat: location.latitude, lng: location.longitude }}
-            zoom={17}
-          >
-            {location && (
-              <Marker
-                position={{ lat: location.latitude, lng: location.longitude }}
-                title="Your location"
-              />
-            )}
-          </GoogleMap>
-        </LoadScript>
+        <GoogleMap
+          mapContainerStyle={{ flex: 1, height: "100vh" }}
+          center={{ lat: location.latitude, lng: location.longitude }}
+          zoom={17}
+        >
+          <MarkerF
+            position={{ lat: location.latitude, lng: location.longitude }}
+            title="Your location"
+          />
+        </GoogleMap>
       ) : (
         <LoadingScreen />
       )}
