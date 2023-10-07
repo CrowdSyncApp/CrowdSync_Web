@@ -22,10 +22,7 @@ Amplify.configure(awsmobile);
 
 Amplify.configure({
   API: {
-    graphql_endpoint: 'https://xx.appsync-api.us-west-1.amazonaws.com/graphql',
-    graphql_headers: async () => ({
-      'x-api-key': 'xxxx',
-    })
+    graphql_endpoint: 'https://nuv7tifvtnfmdcezkleopjfmny.appsync-api.us-west-1.amazonaws.com/graphql',
   }
 });
 
