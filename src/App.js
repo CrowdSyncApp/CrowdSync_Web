@@ -18,56 +18,56 @@ import ForgotPassword from "./components/ForgotPassword";
 import UserLocation from "./components/UserLocation";
 
 const awsmobile = {
-  "name": "crowdsync-web",
-  "version": "0.1.0",
-  "homepage": "https://main.d2jor45tr2cyp1.amplifyapp.com/",
-  "private": true,
-  "dependencies": {
-    "@react-google-maps/api": "^2.19.2",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "aws-amplify": "^5.3.11",
-    "aws-sdk": "^2.1467.0",
-    "qrcode.react": "^3.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
-    "react-router-dom": "^6.16.0",
-    "react-scripts": "^5.0.1",
-    "text-encoding": "^0.7.0",
-    "web-vitals": "^2.1.4"
+  "aws_project_region": "us-west-1",
+  "aws_appsync_graphqlEndpoint": "https://nuv7tifvtnfmdcezkleopjfmny.appsync-api.us-west-1.amazonaws.com/graphql",
+  "aws_appsync_region": "us-west-1",
+  "aws_appsync_authenticationType": "API_KEY",
+  "aws_appsync_apiKey": "da2-ttcizi64dne7rc7rzzndxnnwga",
+  "aws_cognito_identity_pool_id": "us-west-1:324c95b5-17cb-4635-a7a6-5e81d07d737e",
+  "aws_cognito_region": "us-west-1",
+  "aws_user_pools_id": "us-west-1_dKIJ0foij",
+  "aws_user_pools_web_client_id": "7qlsnl0fi9ql85p3l2fhreeejv",
+  "oauth": {},
+  "aws_cognito_username_attributes": [
+      "EMAIL",
+      "PHONE_NUMBER"
+  ],
+  "aws_cognito_social_providers": [],
+  "aws_cognito_signup_attributes": [
+      "EMAIL"
+  ],
+  "aws_cognito_mfa_configuration": "OFF",
+  "aws_cognito_mfa_types": [
+      "SMS"
+  ],
+  "aws_cognito_password_protection_settings": {
+      "passwordPolicyMinLength": 8,
+      "passwordPolicyCharacters": [
+          "REQUIRES_LOWERCASE",
+          "REQUIRES_UPPERCASE",
+          "REQUIRES_NUMBERS"
+      ]
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "aws_cognito_verification_mechanisms": [
+      "EMAIL"
+  ],
+  "aws_user_files_s3_bucket": "crowdsyncuserprofileimages",
+  "aws_user_files_s3_bucket_region": "us-west-1",
+  "aws_mobile_analytics_app_id": "c29ef46086b54f1987373e9888a3ea7d",
+  "aws_mobile_analytics_app_region": "us-west-2",
+  "Analytics": {
+      "AWSPinpoint": {
+          "appId": "c29ef46086b54f1987373e9888a3ea7d",
+          "region": "us-west-2"
+      }
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/crypto-js": "^4.1.2",
-    "@types/google.maps": "^3.54.3",
-    "@types/react-modal": "^3.16.1",
-    "@types/text-encoding": "^0.0.37",
-    "@types/uuid": "^9.0.4"
+  "Notifications": {
+      "Push": {
+          "AWSPinpoint": {
+              "appId": "c29ef46086b54f1987373e9888a3ea7d",
+              "region": "us-west-2"
+          }
+      }
   }
 };
 
