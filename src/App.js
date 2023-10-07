@@ -20,12 +20,6 @@ import UserLocation from "./components/UserLocation";
 
 Amplify.configure(awsmobile);
 
-Amplify.configure({
-  API: {
-    graphql_endpoint: 'https://nuv7tifvtnfmdcezkleopjfmny.appsync-api.us-west-1.amazonaws.com/graphql',
-  }
-});
-
 const AppNavigator = () => {
   return (
     <Routes>
