@@ -1,0 +1,133 @@
+{
+  "analytics": {
+    "crowdsync": {
+      "providerPlugin": "awscloudformation",
+      "service": "Pinpoint"
+    }
+  },
+  "api": {},
+  "auth": {
+    "crowdsyncea9fc77e": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_UPPERCASE",
+            "REQUIRES_NUMBERS"
+          ],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL",
+          "PHONE_NUMBER"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "crowdsyncea9fc77eCustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "notifications": {
+    "crowdsync": {
+      "channels": [
+        "FCM"
+      ],
+      "service": "Pinpoint"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_crowdsyncea9fc77eCustomMessage_EMAILMESSAGE": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_crowdsyncea9fc77eCustomMessage_EMAILSUBJECT": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_crowdsyncea9fc77eCustomMessage_REDIRECTURL": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_crowdsyncea9fc77eCustomMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_crowdsyncea9fc77eCustomMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_storage_crowdsyncb3eaa847_bucketName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "crowdsyncb3eaa847"
+        }
+      ]
+    },
+    "AMPLIFY_storage_crowdsyncb3eaa847_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "crowdsyncb3eaa847"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "crowdsyncb3eaa847": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "serviceType": "imported"
+    }
+  }
+}

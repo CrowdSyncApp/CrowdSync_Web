@@ -1,0 +1,172 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-crowdsync-dev-110114-authRole",
+      "UnauthRoleArn": "arn:aws:iam::034033469384:role/amplify-crowdsync-dev-110114-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::034033469384:role/amplify-crowdsync-dev-110114-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-crowdsync-dev-110114-deployment",
+      "UnauthRoleName": "amplify-crowdsync-dev-110114-unauthRole",
+      "StackName": "amplify-crowdsync-dev-110114",
+      "StackId": "arn:aws:cloudformation:us-west-1:034033469384:stack/amplify-crowdsync-dev-110114/68c2a0b0-3095-11ee-b672-065451e756ef",
+      "AmplifyAppId": "d2jor45tr2cyp1",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-crowdsync-dev-110114-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    }
+  },
+  "api": {
+    "CrowdSyncAPI": {
+      "service": "AppSync",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY"
+          },
+          "additionalAuthenticationProviders": null
+        },
+        "GraphQLAPIIdOutput": "vb2ejb67hva37hdnukgwq33gce",
+        "GraphQLAPIEndpointOutput": "https://nuv7tifvtnfmdcezkleopjfmny.appsync-api.us-west-1.amazonaws.com/graphql",
+        "name": "CrowdSyncAPI",
+        "region": "us-west-1",
+        "GraphQLAPIKeyOutput": "da2-ttcizi64dne7rc7rzzndxnnwga"
+      },
+      "lastPushTimeStamp": "2023-08-07T05:11:26.718Z"
+    }
+  },
+  "auth": {
+    "crowdsyncea9fc77e": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "crowdsyncea9fc77eCustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_UPPERCASE",
+            "REQUIRES_NUMBERS"
+          ]
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL",
+          "PHONE_NUMBER"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-west-1_dKIJ0foij",
+        "AppClientIDWeb": "7qlsnl0fi9ql85p3l2fhreeejv",
+        "AppClientID": "7r2dq7hjo5qja38s0m9duf7l7v",
+        "IdentityPoolId": "us-west-1:324c95b5-17cb-4635-a7a6-5e81d07d737e",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-1:034033469384:userpool/us-west-1_dKIJ0foij",
+        "IdentityPoolName": "crowdsyncea9fc77e_identitypool_ea9fc77e__dev",
+        "UserPoolName": "crowdsyncea9fc77e_userpool_ea9fc77e"
+      },
+      "lastPushTimeStamp": "2023-09-10T19:10:06.470Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-crowdsync-dev-110114-deployment/amplify-cfn-templates/auth/crowdsyncea9fc77e-cloudformation-template.json",
+        "logicalId": "authcrowdsyncea9fc77e"
+      },
+      "lastPushDirHash": "a3OzqUp2zpkUHIO7FwixQQj+vHg="
+    }
+  },
+  "function": {
+    "crowdsyncea9fc77eCustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::034033469384:role/crowdsyncea9fc77eCustomMessage-dev",
+        "Region": "us-west-1",
+        "Arn": "arn:aws:lambda:us-west-1:034033469384:function:crowdsyncea9fc77eCustomMessage-dev",
+        "Name": "crowdsyncea9fc77eCustomMessage-dev",
+        "LambdaExecutionRole": "crowdsyncea9fc77eCustomMessage-dev"
+      },
+      "lastPushTimeStamp": "2023-09-10T19:10:06.479Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-crowdsync-dev-110114-deployment/amplify-cfn-templates/function/crowdsyncea9fc77eCustomMessage-cloudformation-template.json",
+        "logicalId": "functioncrowdsyncea9fc77eCustomMessage"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-crowdsync-dev-110114-deployment",
+        "s3Key": "amplify-builds/crowdsyncea9fc77eCustomMessage-57616a7257524c4e494c-build.zip"
+      }
+    }
+  },
+  "storage": {
+    "crowdsyncb3eaa847": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "BucketName": "crowdsyncuserprofileimages",
+        "Region": "us-west-1"
+      },
+      "lastPushTimeStamp": "2023-08-21T20:28:56.905Z"
+    }
+  },
+  "analytics": {
+    "crowdsync": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-crowdsync-dev-110114-deployment/amplify-cfn-templates/analytics/pinpoint-cloudformation-template.json",
+        "logicalId": "analyticscrowdsync"
+      },
+      "lastPushTimeStamp": "2023-09-10T19:10:06.981Z",
+      "output": {
+        "appName": "crowdsync-dev",
+        "Region": "us-west-2",
+        "Id": "c29ef46086b54f1987373e9888a3ea7d"
+      },
+      "lastPushDirHash": "Gt26r5G0E4VfFLzkWQl2vBgwwg0="
+    }
+  },
+  "notifications": {
+    "crowdsync": {
+      "Id": "c29ef46086b54f1987373e9888a3ea7d",
+      "ResourceName": "crowdsync",
+      "Name": "crowdsync-dev",
+      "service": "Pinpoint",
+      "output": {
+        "Id": "c29ef46086b54f1987373e9888a3ea7d",
+        "Name": "crowdsync-dev",
+        "Region": "us-west-2",
+        "FCM": {
+          "ApplicationId": "c29ef46086b54f1987373e9888a3ea7d",
+          "CreationDate": "2023-09-10T19:30:42.159Z",
+          "Enabled": true,
+          "HasCredential": true,
+          "HasFcmServiceCredentials": false,
+          "Id": "gcm",
+          "IsArchived": false,
+          "LastModifiedDate": "2023-09-10T19:30:42.159Z",
+          "Platform": "GCM",
+          "Version": 1
+        },
+        "regulatedResourceName": "crowdsync"
+      }
+    }
+  }
+}
