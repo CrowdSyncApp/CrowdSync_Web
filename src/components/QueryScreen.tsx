@@ -5,7 +5,7 @@ import styles from "./style";
 import { useAuth } from "../QueryCaching";
 import { useLog } from "../CrowdSyncLogManager";
 
-const LoginScreen = () => {
+const QueryScreen = () => {
   const [user_url, setUserUrl] = useState("");
   const [event_name, setEventName] = useState("");
   const navigation = useNavigate();
@@ -68,4 +68,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default QueryScreen;
