@@ -68,7 +68,7 @@ const AppNavigator = () => {
   return (
     <Routes>
       <Route path="/" element={<QueryScreen />} />
-      <Route path="/chat/:participants/:chatType" element={<ResultsScreen />} />
+      <Route path="/results" element={<ResultsScreen />} />
     </Routes>
   );
 };
