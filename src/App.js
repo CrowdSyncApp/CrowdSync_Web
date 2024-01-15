@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { LogProvider } from "./CrowdSyncLogManager";
 import { Amplify } from "aws-amplify";
-import { LoadScript } from "@react-google-maps/api";
 
 import QueryScreen from "./components/QueryScreen";
 import ResultsScreen from "./components/ResultsScreen";
@@ -19,45 +18,45 @@ const awsmobile = {
   "aws_user_pools_web_client_id": "7qlsnl0fi9ql85p3l2fhreeejv",
   "oauth": {},
   "aws_cognito_username_attributes": [
-      "EMAIL",
-      "PHONE_NUMBER"
+    "EMAIL",
+    "PHONE_NUMBER"
   ],
   "aws_cognito_social_providers": [],
   "aws_cognito_signup_attributes": [
-      "EMAIL"
+    "EMAIL"
   ],
   "aws_cognito_mfa_configuration": "OFF",
   "aws_cognito_mfa_types": [
-      "SMS"
+    "SMS"
   ],
   "aws_cognito_password_protection_settings": {
-      "passwordPolicyMinLength": 8,
-      "passwordPolicyCharacters": [
-          "REQUIRES_LOWERCASE",
-          "REQUIRES_UPPERCASE",
-          "REQUIRES_NUMBERS"
-      ]
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [
+      "REQUIRES_LOWERCASE",
+      "REQUIRES_UPPERCASE",
+      "REQUIRES_NUMBERS"
+    ]
   },
   "aws_cognito_verification_mechanisms": [
-      "EMAIL"
+    "EMAIL"
   ],
   "aws_user_files_s3_bucket": "crowdsyncuserprofileimages",
   "aws_user_files_s3_bucket_region": "us-west-1",
   "aws_mobile_analytics_app_id": "c29ef46086b54f1987373e9888a3ea7d",
   "aws_mobile_analytics_app_region": "us-west-2",
   "Analytics": {
-      "AWSPinpoint": {
-          "appId": "c29ef46086b54f1987373e9888a3ea7d",
-          "region": "us-west-2"
-      }
+    "AWSPinpoint": {
+      "appId": "c29ef46086b54f1987373e9888a3ea7d",
+      "region": "us-west-2"
+    }
   },
   "Notifications": {
-      "Push": {
-          "AWSPinpoint": {
-              "appId": "c29ef46086b54f1987373e9888a3ea7d",
-              "region": "us-west-2"
-          }
+    "Push": {
+      "AWSPinpoint": {
+        "appId": "c29ef46086b54f1987373e9888a3ea7d",
+        "region": "us-west-2"
       }
+    }
   }
 };
 
@@ -75,10 +74,9 @@ const AppNavigator = () => {
 function App() {
   return (
     <LogProvider>
-        <Router>
-          <LoadScript googleMapsApiKey="AIzaSyDpQkIQ690BaoZdhOTypPfrWl7rruN2Srs" />
-          <AppNavigator />
-        </Router>
+      <Router>
+        <AppNavigator />
+      </Router>
     </LogProvider>
   );
 }
