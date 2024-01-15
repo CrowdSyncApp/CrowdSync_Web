@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CrowdSyncLogo from "../images/Crowdsync_Logo.png";
 import styles from "./style";
-import { useAuth } from "../QueryCaching";
 import { useLog } from "../CrowdSyncLogManager";
 
 const QueryScreen = () => {
   const [user_url, setUserUrl] = useState("");
   const [event_name, setEventName] = useState("");
   const navigation = useNavigate();
-  const authContext = useAuth();
   const log = useLog();
 
   const handleSubmit = () => {

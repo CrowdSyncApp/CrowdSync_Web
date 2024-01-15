@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { AuthProvider } from "./QueryCaching";
 import { LogProvider } from "./CrowdSyncLogManager";
 import { Amplify } from "aws-amplify";
 import { LoadScript } from "@react-google-maps/api";
@@ -76,12 +75,10 @@ const AppNavigator = () => {
 function App() {
   return (
     <LogProvider>
-      <AuthProvider>
         <Router>
           <LoadScript googleMapsApiKey="AIzaSyDpQkIQ690BaoZdhOTypPfrWl7rruN2Srs" />
           <AppNavigator />
         </Router>
-      </AuthProvider>
     </LogProvider>
   );
 }
