@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { LogProvider } from "./CrowdSyncLogManager";
 import { Amplify } from "aws-amplify";
 
-import QueryScreen from "./components/QueryScreen";
-import ResultsScreen from "./components/ResultsScreen";
+import QueryScreen from "./components/QueryScreen.tsx";
+import ResultsScreen from "./components/ResultsScreen.tsx";
 
 const awsmobile = {
   "aws_project_region": "us-west-1",

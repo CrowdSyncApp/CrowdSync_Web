@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "react-native-get-random-values";
-import styles from "./style";
-import { useLog } from "../CrowdSyncLogManager";
-import { useParams } from "react-router-dom";
 
 const ResultsScreen = () => {
-  const [newMessage, setNewMessage] = useState("");
-  const [chatId, setChatId] = useState("");
-  const [recIds, setRecIds] = useState([]);
-  const log = useLog();
-
   return (
     <div
       style={{
