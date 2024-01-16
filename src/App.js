@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { LogProvider } from "./CrowdSyncLogManager";
 import { Amplify } from "aws-amplify";
 
 import QueryScreen from "./components/QueryScreen.tsx";
@@ -73,11 +72,9 @@ const AppNavigator = () => {
 
 function App() {
   return (
-    <LogProvider>
-      <Router>
-        <AppNavigator />
-      </Router>
-    </LogProvider>
+    <Router>
+      <AppNavigator />
+    </Router>
   );
 }
 
