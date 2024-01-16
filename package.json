@@ -1,22 +1,17 @@
 {
-  "name": "crowdsync-web",
+  "name": "mvps",
   "version": "0.1.0",
-  "homepage": "https://main.d2jor45tr2cyp1.amplifyapp.com/",
   "private": true,
   "dependencies": {
-    "@react-google-maps/api": "^2.19.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "aws-amplify": "^5.3.11",
     "aws-sdk": "^2.1467.0",
-    "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
     "react-router-dom": "^6.16.0",
-    "react-scripts": "^5.0.1",
-    "text-encoding": "^0.7.0",
+    "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -42,12 +37,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/crypto-js": "^4.1.2",
-    "@types/google.maps": "^3.54.3",
-    "@types/react-modal": "^3.16.1",
-    "@types/text-encoding": "^0.0.37",
-    "@types/uuid": "^9.0.4"
   }
 }
