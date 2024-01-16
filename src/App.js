@@ -6,6 +6,8 @@ import { Amplify } from "aws-amplify";
 import { LoadScript } from "@react-google-maps/api";
 
 import LoginScreen from "./components/LoginScreen";
+import QueryScreen from "./components/QueryScreen";
+import ResultsScreen from "./components/ResultsScreen";
 import SignUp from "./components/SignUp";
 import FindSession from "./components/FindSession";
 import QRScannerScreen from "./components/QRScannerScreen";
@@ -29,45 +31,45 @@ const awsmobile = {
   "aws_user_pools_web_client_id": "7qlsnl0fi9ql85p3l2fhreeejv",
   "oauth": {},
   "aws_cognito_username_attributes": [
-      "EMAIL",
-      "PHONE_NUMBER"
+    "EMAIL",
+    "PHONE_NUMBER"
   ],
   "aws_cognito_social_providers": [],
   "aws_cognito_signup_attributes": [
-      "EMAIL"
+    "EMAIL"
   ],
   "aws_cognito_mfa_configuration": "OFF",
   "aws_cognito_mfa_types": [
-      "SMS"
+    "SMS"
   ],
   "aws_cognito_password_protection_settings": {
-      "passwordPolicyMinLength": 8,
-      "passwordPolicyCharacters": [
-          "REQUIRES_LOWERCASE",
-          "REQUIRES_UPPERCASE",
-          "REQUIRES_NUMBERS"
-      ]
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [
+      "REQUIRES_LOWERCASE",
+      "REQUIRES_UPPERCASE",
+      "REQUIRES_NUMBERS"
+    ]
   },
   "aws_cognito_verification_mechanisms": [
-      "EMAIL"
+    "EMAIL"
   ],
   "aws_user_files_s3_bucket": "crowdsyncuserprofileimages",
   "aws_user_files_s3_bucket_region": "us-west-1",
   "aws_mobile_analytics_app_id": "c29ef46086b54f1987373e9888a3ea7d",
   "aws_mobile_analytics_app_region": "us-west-2",
   "Analytics": {
-      "AWSPinpoint": {
-          "appId": "c29ef46086b54f1987373e9888a3ea7d",
-          "region": "us-west-2"
-      }
+    "AWSPinpoint": {
+      "appId": "c29ef46086b54f1987373e9888a3ea7d",
+      "region": "us-west-2"
+    }
   },
   "Notifications": {
-      "Push": {
-          "AWSPinpoint": {
-              "appId": "c29ef46086b54f1987373e9888a3ea7d",
-              "region": "us-west-2"
-          }
+    "Push": {
+      "AWSPinpoint": {
+        "appId": "c29ef46086b54f1987373e9888a3ea7d",
+        "region": "us-west-2"
       }
+    }
   }
 };
 
@@ -76,7 +78,9 @@ Amplify.configure(awsmobile);
 const AppNavigator = () => {
   return (
     <Routes>
-      <Route path="/" element={<LoginScreen />} />
+      <Route path="/" element={<QueryScreen />} />
+      <Route path="/results" element={<ResultsScreen />} />
+      <Route path="/login" element={<LoginScreen />} />
       <Route path="/chat/:participants/:chatType" element={<ChatScreen />} />
       <Route path="/findsession" element={<FindSession />} />
       <Route path="/qrcode" element={<QRScannerScreen />} />
